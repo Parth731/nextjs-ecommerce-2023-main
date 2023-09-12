@@ -2,14 +2,14 @@
 
 import { GlobalContext } from '@/context';
 import { deleteAProduct } from '@/services/product';
-import { listofProducts } from '@/types/type';
+import { productsDetailData } from '@/types/type';
 import { usePathname, useRouter } from 'next/navigation';
 import { useContext } from 'react';
 import { toast } from 'react-toastify';
 import ComponentLevelLoader from '../Loader/ComponentLevelLoader';
 import { addToCart } from '@/services/cart';
 
-export default function ProductButton({ item }: any) {
+export default function ProductButton({ item }: productsDetailData) {
   const pathName = usePathname();
   const {
     setCurrentUpdatedProduct,
@@ -60,8 +60,6 @@ export default function ProductButton({ item }: any) {
       setComponentLevelLoader({ loading: false, id: '' });
       setShowCartModal(true);
     }
-
-    console.log(res);
   }
 
   return isAdminView ? (

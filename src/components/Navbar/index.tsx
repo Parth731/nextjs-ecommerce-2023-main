@@ -7,7 +7,7 @@ import { Fragment, useContext, useEffect } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
 import CommonModal from '../commonModal';
 import CartModal from '../cartModal';
-import { NavbarType } from '@/types/type';
+import { NavbarType, navOptionsType } from '@/types/type';
 
 function NavItems({ isModalView = false, isAdminView, router }: NavbarType) {
   return (
@@ -21,7 +21,7 @@ function NavItems({ isModalView = false, isAdminView, router }: NavbarType) {
           isModalView ? 'border-none' : 'border border-gray-100'
         }`}>
         {isAdminView
-          ? adminNavOptions.map((item) => (
+          ? adminNavOptions.map((item: navOptionsType) => (
               <li
                 className='cursor-pointer block py-2 pl-3 pr-4 text-gray-900 rounded md:p-0'
                 key={item.id}
@@ -57,8 +57,6 @@ export default function Navbar() {
 
   const pathName = usePathname();
   const router = useRouter();
-
-  // console.log(currentUpdatedProduct, "navbar");
 
   useEffect(() => {
     if (

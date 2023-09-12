@@ -3,6 +3,7 @@
 import CommonCart from '@/components/commonCart';
 import { GlobalContext } from '@/context';
 import { deleteFromCart, getAllCartItems } from '@/services/cart';
+import { cartType } from '@/types/type';
 import { useContext, useEffect } from 'react';
 import { PulseLoader } from 'react-spinners';
 import { toast } from 'react-toastify';
@@ -21,12 +22,11 @@ export default function Cart() {
   async function extractAllCartItems() {
     setPageLevelLoader(true);
     const res = await getAllCartItems(user?._id);
-    console.log(res);
 
     if (res.success) {
       const updatedData =
         res.data && res.data.length
-          ? res.data.map((item: any) => ({
+          ? res.data.map((item: cartType) => ({
               ...item,
               productID: {
                 ...item.productID,
@@ -47,15 +47,13 @@ export default function Cart() {
       setPageLevelLoader(false);
       localStorage.setItem('cartItems', JSON.stringify(updatedData));
     }
-
-    console.log(res);
   }
 
   useEffect(() => {
     if (user !== null) extractAllCartItems();
   }, [user]);
 
-  async function handleDeleteCartItem(getCartItemID: any) {
+  async function handleDeleteCartItem(getCartItemID: string) {
     setComponentLevelLoader({ loading: true, id: getCartItemID });
     const res = await deleteFromCart(getCartItemID);
 

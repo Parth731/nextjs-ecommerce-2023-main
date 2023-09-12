@@ -1,9 +1,14 @@
 'use client';
 
 import {
+  AllOrdersForAllUsersType,
   LayoutProps,
+  addressType,
   adminAddProductType,
+  cartType,
+  checkoutFormDataType,
   loadderType,
+  orderType,
   responseLoginType,
 } from '@/types/type';
 import { createContext, useEffect, useState } from 'react';
@@ -12,7 +17,7 @@ import { usePathname, useRouter } from 'next/navigation';
 
 export const GlobalContext = createContext(null);
 
-export const initialCheckoutFormData: any = {
+export const initialCheckoutFormData: checkoutFormDataType = {
   shippingAddress: {},
   paymentMethod: '',
   totalPrice: 0,
@@ -21,9 +26,15 @@ export const initialCheckoutFormData: any = {
   isProcessing: true,
 };
 
-const protectedRoutes = ['cart', 'checkout', 'account', 'orders', 'admin-view'];
+const protectedRoutes: string[] = [
+  'cart',
+  'checkout',
+  'account',
+  'orders',
+  'admin-view',
+];
 
-const protectedAdminRoutes = [
+const protectedAdminRoutes: string[] = [
   '/admin-view',
   '/admin-view/add-product',
   '/admin-view/all-products',
@@ -44,10 +55,10 @@ export default function GlobalState({ children }: LayoutProps) {
   const [currentUpdatedProduct, setCurrentUpdatedProduct] = useState<
     adminAddProductType | {}
   >({});
-  const [showCartModal, setShowCartModal] = useState(false);
-  const [cartItems, setCartItems] = useState([]);
-  const [addresses, setAddresses] = useState([]);
-  const [addressFormData, setAddressFormData] = useState({
+  const [showCartModal, setShowCartModal] = useState<boolean>(false);
+  const [cartItems, setCartItems] = useState<cartType[] | []>([]);
+  const [addresses, setAddresses] = useState<addressType[]>([]);
+  const [addressFormData, setAddressFormData] = useState<addressType>({
     fullName: '',
     city: '',
     country: '',
@@ -55,13 +66,14 @@ export default function GlobalState({ children }: LayoutProps) {
     address: '',
   });
 
-  const [checkoutFormData, setCheckoutFormData] = useState(
-    initialCheckoutFormData
-  );
+  const [checkoutFormData, setCheckoutFormData] =
+    useState<checkoutFormDataType>(initialCheckoutFormData);
 
-  const [allOrdersForUser, setAllOrdersForUser] = useState([]);
-  const [orderDetails, setOrderDetails] = useState(null);
-  const [allOrdersForAllUsers, setAllOrdersForAllUsers] = useState([]);
+  const [allOrdersForUser, setAllOrdersForUser] = useState<orderType[]>([]);
+  const [orderDetails, setOrderDetails] = useState<orderType | null>(null);
+  const [allOrdersForAllUsers, setAllOrdersForAllUsers] = useState<
+    AllOrdersForAllUsersType[]
+  >([]);
 
   const router = useRouter();
   const pathName = usePathname();
@@ -71,7 +83,7 @@ export default function GlobalState({ children }: LayoutProps) {
       setIsAuthUser(true);
       const userLocal: any = localStorage.getItem('user');
       const userData: responseLoginType[] = JSON.parse(userLocal) || {};
-      console.log(userData);
+
       const cartItems: any = localStorage.getItem('cartItems');
       const getCartItems = JSON.parse(cartItems) || [];
       setUser(userData);
@@ -89,7 +101,7 @@ export default function GlobalState({ children }: LayoutProps) {
       pathName !== '/' &&
       user &&
       Object.keys(user).length === 0 &&
-      protectedRoutes.includes(pathName)
+      protectedAdminRoutes.includes(pathName)
     )
       router.push('/login');
   }, [user, pathName]);

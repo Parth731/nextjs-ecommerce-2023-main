@@ -30,7 +30,6 @@ const createUniqueFileName = (getFile: any) => {
 };
 
 async function helperForUPloadingImageToFirebase(file: any) {
-  console.log(file);
   const getFileName = createUniqueFileName(file);
   const storageReference = ref(storage, `ecommerce/${getFileName}`);
   const uploadImage = uploadBytesResumable(storageReference, file);
@@ -40,7 +39,6 @@ async function helperForUPloadingImageToFirebase(file: any) {
       'state_changed',
       (snapshot) => {},
       (error) => {
-        console.log(error);
         reject(error);
       },
       () => {
@@ -74,22 +72,17 @@ const AdminAddNewProduct = () => {
     setCurrentUpdatedProduct,
   }: any = useContext(GlobalContext);
 
-  console.log(currentUpdatedProduct);
-
   const router = useRouter();
 
   useEffect(() => {
     if (currentUpdatedProduct !== null) setFormData(currentUpdatedProduct);
-    console.log(currentUpdatedProduct);
   }, [currentUpdatedProduct]);
 
   async function handleImage(event: any) {
-    console.log(event.target.files[0]);
     const extractImageUrl = await helperForUPloadingImageToFirebase(
       event.target.files[0]
     );
 
-    console.log(extractImageUrl);
     if (extractImageUrl) {
       toast.success('file upload successfully!!', {
         position: toast.POSITION.TOP_CENTER,
@@ -126,8 +119,6 @@ const AdminAddNewProduct = () => {
       currentUpdatedProduct !== null
         ? await updateAProduct(formData)
         : await addNewProduct(formData);
-
-    console.log(res);
 
     if (res.success) {
       setComponentLevelLoader({ loading: false, id: '' });

@@ -1,4 +1,9 @@
-import { FormControlType, navOptionsType, sizes } from '@/types/type';
+import {
+  FormControlType,
+  addNewAddressFormControlsType,
+  navOptionsType,
+  sizes,
+} from '@/types/type';
 
 export const navOptions: navOptionsType[] = [
   {
@@ -190,7 +195,7 @@ export const AvailableSizes: sizes[] = [
   },
 ];
 
-export const addNewAddressFormControls = [
+export const addNewAddressFormControls: addNewAddressFormControlsType[] = [
   {
     id: 'fullName',
     type: 'input',

@@ -2,12 +2,13 @@
 
 import { useRouter } from 'next/navigation';
 import ComponentLevelLoader from '../Loader/ComponentLevelLoader';
+import { CommonCartType } from '@/types/type';
 
 export default function CommonCart({
   cartItems = [],
   handleDeleteCartItem,
   componentLevelLoader,
-}: any) {
+}: CommonCartType) {
   const router = useRouter();
 
   return (

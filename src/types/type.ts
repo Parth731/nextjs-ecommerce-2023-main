@@ -90,7 +90,71 @@ export interface productsData {
   data: listofProducts[];
 }
 
+export interface productsDetailData {
+  item: listofProducts;
+}
+
+export interface cartType {
+  userID: string;
+  quantity: number;
+  _id: string;
+  productID: listofProducts;
+}
+
+export interface CommonCartType {
+  componentLevelLoader: loadderType;
+  handleDeleteCartItem: (id: string) => void;
+  cartItems: cartType[];
+}
+
+export interface addressType {
+  fullName: string;
+  city: string;
+  country: string;
+  postalCode: string;
+  address: string;
+}
+
+export interface addressIdType extends addressType {
+  _id: string;
+}
+
+export interface checkoutFormDataType {
+  isPaid: boolean;
+  isProcessing: boolean;
+  paidAt: string | Date;
+  paymentMethod: string;
+  shippingAddress: addressType | {};
+  totalPrice: number;
+}
+
+export interface orderItemsType {
+  product: adminAddProductType;
+  qty: number;
+  _id: string;
+}
+
+export interface orderType extends checkoutFormDataType {
+  orderItems: orderItemsType[];
+  user: string;
+  _id: string;
+}
+
+export interface AllOrdersForAllUsersType extends checkoutFormDataType {
+  orderItems: orderItemsType[];
+  user: responseLoginType;
+  _id: string;
+}
+
 export type configOptionsType = {
   useNewUrlParser: boolean;
   useUnifiedTopology: boolean;
 };
+
+export interface addNewAddressFormControlsType {
+  id: string;
+  type: string;
+  placeholder: string;
+  label: string;
+  componentType: string;
+}

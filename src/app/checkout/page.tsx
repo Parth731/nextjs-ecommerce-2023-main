@@ -5,6 +5,7 @@ import { GlobalContext } from '@/context';
 import { fetchAllAddresses } from '@/services/address';
 import { createNewOrder } from '@/services/order';
 import { callStripeSession } from '@/services/stripe';
+import { addressIdType, cartType } from '@/types/type';
 import { loadStripe } from '@stripe/stripe-js';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useContext, useEffect, useState } from 'react';
@@ -21,9 +22,9 @@ export default function Checkout() {
     setCheckoutFormData,
   }: any = useContext(GlobalContext);
 
-  const [selectedAddress, setSelectedAddress] = useState(null);
-  const [isOrderProcessing, setIsOrderProcessing] = useState(false);
-  const [orderSuccess, setOrderSuccess] = useState(false);
+  const [selectedAddress, setSelectedAddress] = useState<string | null>('');
+  const [isOrderProcessing, setIsOrderProcessing] = useState<boolean>(false);
+  const [orderSuccess, setOrderSuccess] = useState<boolean>(false);
 
   const router = useRouter();
   const params = useSearchParams();
@@ -31,8 +32,6 @@ export default function Checkout() {
   const publishableKey =
     'pk_test_51Ng5zCSJ8x5trtMX6KiMzOP0VJABZVIagqd5RCzLnUKZqAD2DX0WrYEYB5dIxASOIif1t7qlfio50L0aARlJOBwO00IEI3LlBN';
   const stripePromise = loadStripe(publishableKey);
-
-  console.log(cartItems);
 
   async function getAllAddresses() {
     const res = await fetchAllAddresses(user?._id);
@@ -98,7 +97,7 @@ export default function Checkout() {
     createFinalOrder();
   }, [params.get('status'), cartItems]);
 
-  function handleSelectedAddress(getAddress: any) {
+  function handleSelectedAddress(getAddress: addressIdType) {
     if (getAddress._id === selectedAddress) {
       setSelectedAddress(null);
       setCheckoutFormData({
@@ -149,8 +148,6 @@ export default function Checkout() {
 
     console.log(error);
   }
-
-  console.log(checkoutFormData);
 
   useEffect(() => {
     if (orderSuccess) {
@@ -231,7 +228,7 @@ export default function Checkout() {
           </p>
           <div className='w-full mt-6 mr-0 mb-0 ml-0 space-y-6'>
             {addresses && addresses.length ? (
-              addresses.map((item: any) => (
+              addresses.map((item: addressIdType) => (
                 <div
                   onClick={() => handleSelectedAddress(item)}
                   key={item._id}
@@ -266,7 +263,8 @@ export default function Checkout() {
                 $
                 {cartItems && cartItems.length
                   ? cartItems.reduce(
-                      (total: any, item: any) => item.productID.price + total,
+                      (total: number, item: cartType) =>
+                        item.productID.price + total,
                       0
                     )
                   : '0'}
@@ -282,7 +280,8 @@ export default function Checkout() {
                 $
                 {cartItems && cartItems.length
                   ? cartItems.reduce(
-                      (total: any, item: any) => item.productID.price + total,
+                      (total: any, item: cartType) =>
+                        item.productID.price + total,
                       0
                     )
                   : '0'}

@@ -6,8 +6,9 @@ import { toast } from 'react-toastify';
 import Notification from '../Notification';
 import ComponentLevelLoader from '../Loader/ComponentLevelLoader';
 import { addToCart } from '@/services/cart';
+import { productsDetailData } from '@/types/type';
 
-export default function CommonDetails({ item }: any) {
+export default function CommonDetails({ item }: productsDetailData) {
   const {
     setComponentLevelLoader,
     componentLevelLoader,
